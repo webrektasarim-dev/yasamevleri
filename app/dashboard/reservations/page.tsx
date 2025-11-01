@@ -425,7 +425,7 @@ export default function ReservationsPage() {
                         )}
                         {closedHours.length > 0 && daySettings.isOpen && (
                           <p className="text-xs text-gray-500 mt-1">
-                            {closedHours.slice(0, 3).map(h => `${h}:00`).join(', ')}
+                            {closedHours.slice(0, 3).map((h: number) => `${h}:00`).join(', ')}
                             {closedHours.length > 3 && '...'}
                           </p>
                         )}
