@@ -4,13 +4,11 @@ import { IPayment } from "@/types";
 const PaymentSchema = new Schema<IPayment>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: [true, "User ID is required"],
     },
     duesId: {
-      type: Schema.Types.ObjectId,
-      ref: "Dues",
+      type: String,
       required: [true, "Dues ID is required"],
     },
     amount: {

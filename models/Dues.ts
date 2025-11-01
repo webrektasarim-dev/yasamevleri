@@ -4,8 +4,7 @@ import { IDues } from "@/types";
 const DuesSchema = new Schema<IDues>(
   {
     apartmentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Apartment",
+      type: String,
       required: [true, "Apartment ID is required"],
     },
     period: {
