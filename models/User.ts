@@ -37,8 +37,7 @@ const UserSchema = new Schema<IUser>(
       default: "user",
     },
     apartmentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Apartment",
+      type: String,
     },
     isPhoneVerified: {
       type: Boolean,

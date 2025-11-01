@@ -27,12 +27,7 @@ const ApartmentSchema = new Schema<IApartment>(
       spotNumber: String,
       licensePlate: String,
     },
-    residents: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    residents: [String],
     duesCoefficient: {
       type: Number,
       default: 1,
