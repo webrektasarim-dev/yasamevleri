@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Apartment from "@/models/Apartment";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET all apartments
 export async function GET(req: NextRequest) {
   try {

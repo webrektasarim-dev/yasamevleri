@@ -6,6 +6,8 @@ import User from "@/models/User";
 import Apartment from "@/models/Apartment";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET single user
 export async function GET(
   req: NextRequest,

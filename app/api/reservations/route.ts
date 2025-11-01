@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Reservation from "@/models/Reservation";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET reservations
 export async function GET(req: NextRequest) {
   try {

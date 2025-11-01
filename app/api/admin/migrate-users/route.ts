@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // Eski kullanıcıları migrate et - isApproved alanı ekle
 export async function POST(req: NextRequest) {
   try {

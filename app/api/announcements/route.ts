@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Announcement from "@/models/Announcement";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET announcements
 export async function GET(req: NextRequest) {
   try {

@@ -5,6 +5,8 @@ import SMSVerification from "@/models/SMSVerification";
 import { ApiResponse } from "@/types";
 import bcrypt from "bcryptjs";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { phone, code, newPassword } = await req.json();

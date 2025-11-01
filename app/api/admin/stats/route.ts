@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import { Apartment, User, Dues, Payment, Reservation } from "@/models";
 import { ApiResponse, DashboardStats } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

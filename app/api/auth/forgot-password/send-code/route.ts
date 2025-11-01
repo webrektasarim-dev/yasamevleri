@@ -5,6 +5,8 @@ import SMSVerification from "@/models/SMSVerification";
 import { generateVerificationCode, sendVerificationCode } from "@/lib/sms";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { phone } = await req.json();

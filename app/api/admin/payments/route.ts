@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Payment from "@/models/Payment";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

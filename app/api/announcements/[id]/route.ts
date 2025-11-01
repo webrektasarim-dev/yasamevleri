@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Announcement from "@/models/Announcement";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // PUT update announcement
 export async function PUT(
   req: NextRequest,

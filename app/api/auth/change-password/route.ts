@@ -6,6 +6,8 @@ import User from "@/models/User";
 import { ApiResponse } from "@/types";
 import bcrypt from "bcryptjs";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

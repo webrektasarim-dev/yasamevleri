@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Dues from "@/models/Dues";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET single dues
 export async function GET(
   req: NextRequest,

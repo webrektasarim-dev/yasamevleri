@@ -6,6 +6,8 @@ import { Payment, Dues, User } from "@/models";
 import { iyzicoClient } from "@/lib/iyzico";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

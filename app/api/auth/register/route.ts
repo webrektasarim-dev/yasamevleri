@@ -4,6 +4,8 @@ import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { email, password, phone, firstName, lastName } = await req.json();

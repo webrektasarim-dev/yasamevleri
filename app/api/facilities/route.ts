@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import FacilitySettings from "@/models/FacilitySettings";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET facility settings
 export async function GET(req: NextRequest) {
   try {

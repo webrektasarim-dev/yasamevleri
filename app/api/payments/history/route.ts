@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Payment from "@/models/Payment";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -35,7 +37,6 @@ export async function GET(req: NextRequest) {
       data: payments,
     });
   } catch (error) {
-    console.error("Get payment history error:", error);
     return NextResponse.json<ApiResponse>(
       { success: false, error: "Bir hata oluştu" },
       { status: 500 }

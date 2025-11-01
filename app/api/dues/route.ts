@@ -6,6 +6,8 @@ import Dues from "@/models/Dues";
 import Apartment from "@/models/Apartment";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET dues
 export async function GET(req: NextRequest) {
   try {

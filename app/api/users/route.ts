@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import { ApiResponse } from "@/types";
 
+export const dynamic = 'force-dynamic';
+
 // GET all users
 export async function GET(req: NextRequest) {
   try {

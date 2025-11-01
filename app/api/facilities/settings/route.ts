@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import FacilitySettings from "@/models/FacilitySettings";
 
+export const dynamic = 'force-dynamic';
+
 // GET - Tüm tesis ayarlarını getir
 export async function GET(request: NextRequest) {
   try {
