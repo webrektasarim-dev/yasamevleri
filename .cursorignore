@@ -1,0 +1,11 @@
+﻿# Cursor'ın bu klasörleri görmezden gelmesi için
+node_modules/
+.next/
+.git/
+dist/
+build/
+coverage/
+*.log
+.env*
+.DS_Store
+Thumbs.db
