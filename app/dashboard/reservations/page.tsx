@@ -529,7 +529,6 @@ export default function ReservationsPage() {
             }}
             allDaySlot={false}
             height="700px"
-            nowIndicator={false}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}

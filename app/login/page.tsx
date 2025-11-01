@@ -57,7 +57,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl text-center font-bold text-zinc-900 tracking-tight">Giriş Yap</CardTitle>
           <CardDescription className="text-center text-zinc-600">
-            Örnek Yaşam Evleri'ne hoş geldiniz
+            Örnek Yaşam Evleri&apos;ne hoş geldiniz
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
