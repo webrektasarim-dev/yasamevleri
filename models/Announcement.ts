@@ -22,8 +22,7 @@ const AnnouncementSchema = new Schema<IAnnouncement>(
       default: "normal",
     },
     createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: [true, "Created by is required"],
     },
   },
