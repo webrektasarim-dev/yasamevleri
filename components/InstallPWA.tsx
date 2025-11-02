@@ -69,7 +69,7 @@ export function InstallPWA() {
         <div>
           <h3 className="font-bold text-lg mb-1">Uygulamayı Yükleyin</h3>
           <p className="text-sm text-zinc-300">
-            Örnek Yaşam Evleri'ni telefonunuza ekleyin ve uygulama gibi kullanın!
+            Örnek Yaşam Evleri&apos;ni telefonunuza ekleyin ve uygulama gibi kullanın!
           </p>
         </div>
       </div>
