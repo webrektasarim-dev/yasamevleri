@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/toast";
-import { Clock, Save, CheckCircle, XCircle, Calendar, ChevronRight, Settings2, Bell, Shield } from "lucide-react";
+import { Clock, Save, CheckCircle, XCircle, Calendar, ChevronRight, Settings2, Bell, Shield, Database } from "lucide-react";
+import Link from "next/link";
 
 const facilityTypes = [
   { value: "Spor Salonu", color: "#3b82f6", icon: "🏋️" },
@@ -151,7 +152,21 @@ export default function SettingsPage() {
             <p className="text-sm text-gray-600">Tesislerin hangi gün ve saatlerde açık olacağını belirleyin</p>
           </button>
 
-          {/* Diğer ayar kartları buraya eklenebilir */}
+          {/* Yedekleme Kartı */}
+          <Link href="/admin/backup">
+            <div className="text-left p-6 rounded-2xl bg-white border-2 border-green-200 hover:border-green-400 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 group cursor-pointer">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
+                  <Database className="h-7 w-7 text-white" />
+                </div>
+                <ChevronRight className="h-6 w-6 text-green-400 ml-auto group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Yedekleme</h3>
+              <p className="text-sm text-gray-600">Veritabanını yedekleyin ve geri yükleyin</p>
+            </div>
+          </Link>
+
+          {/* Diğer ayar kartları */}
           <div className="p-6 rounded-2xl bg-white border-2 border-gray-200 shadow-lg opacity-50">
             <div className="flex items-center gap-4 mb-3">
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-lg">

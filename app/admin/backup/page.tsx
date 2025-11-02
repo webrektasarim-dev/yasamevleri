@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast";
+import Link from "next/link";
 import { 
   Download, 
   Upload, 
@@ -13,7 +14,8 @@ import {
   CheckCircle2,
   FileJson,
   RefreshCw,
-  Info
+  Info,
+  ArrowLeft
 } from "lucide-react";
 
 export default function BackupPage() {
@@ -124,6 +126,14 @@ export default function BackupPage() {
   return (
     <div>
       <div className="mb-6 md:mb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <Link href="/admin/settings">
+            <Button variant="outline" size="sm" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Ayarlara Dön
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">Yedekleme</h1>
         <p className="text-sm md:text-base text-zinc-600 mt-1">
           Veritabanını yedekleyin ve geri yükleyin

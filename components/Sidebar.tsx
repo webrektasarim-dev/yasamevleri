@@ -16,7 +16,6 @@ import {
   DoorOpen,
   UserCog,
   X,
-  Database,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -46,7 +45,6 @@ export function Sidebar({ isAdmin = false, isOpen, onClose }: SidebarProps) {
     { href: "/admin/reservations", label: "Rezervasyonlar", icon: Calendar },
     { href: "/admin/announcements", label: "Duyurular", icon: Bell },
     { href: "/admin/reports", label: "Raporlar", icon: BarChart3 },
-    { href: "/admin/backup", label: "Yedekleme", icon: Database },
     { href: "/admin/profile", label: "Profil", icon: UserCog },
     { href: "/admin/settings", label: "Ayarlar", icon: Settings },
   ];
