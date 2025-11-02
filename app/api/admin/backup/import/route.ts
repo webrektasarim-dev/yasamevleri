@@ -69,21 +69,43 @@ export async function POST(req: NextRequest) {
 
     // Import data - Remove _id to avoid duplicates
     if (data.apartments && Array.isArray(data.apartments)) {
-      const apartmentsData = removeIds(data.apartments);
-      const apartments = await Apartment.insertMany(apartmentsData);
-      results.apartments = apartments.length;
+      const apartmentsToFilter = mode === 'merge'
+        ? await filterDuplicateApartments(data.apartments)
+        : data.apartments;
+      
+      if (apartmentsToFilter.length > 0) {
+        const apartmentsData = removeIds(apartmentsToFilter);
+        try {
+          const apartments = await Apartment.insertMany(apartmentsData, { ordered: false });
+          results.apartments = apartments.length;
+        } catch (error: any) {
+          // If some apartments failed due to duplicates, count successful ones
+          if (error.writeErrors) {
+            results.apartments = error.insertedDocs?.length || 0;
+          } else {
+            throw error;
+          }
+        }
+      }
     }
 
     if (data.users && Array.isArray(data.users)) {
-      // Filter out users with duplicate emails if in merge mode
-      const usersToFilter = mode === 'merge' 
-        ? await filterDuplicateUsers(data.users)
-        : data.users;
+      // Always filter out duplicate emails (both modes)
+      const usersToFilter = await filterDuplicateUsers(data.users);
       
       if (usersToFilter.length > 0) {
         const usersData = removeIds(usersToFilter);
-        const users = await User.insertMany(usersData);
-        results.users = users.length;
+        try {
+          const users = await User.insertMany(usersData, { ordered: false });
+          results.users = users.length;
+        } catch (error: any) {
+          // If some users failed due to duplicate emails, count successful ones
+          if (error.writeErrors) {
+            results.users = error.insertedDocs?.length || 0;
+          } else {
+            throw error;
+          }
+        }
       }
     }
 
@@ -132,8 +154,37 @@ export async function POST(req: NextRequest) {
 }
 
 async function filterDuplicateUsers(users: any[]) {
-  const existingEmails = await User.find({}, 'email').lean();
-  const emailSet = new Set(existingEmails.map(u => u.email));
-  return users.filter(user => !emailSet.has(user.email));
+  // Mevcut tüm email ve telefon numaralarını al
+  const existingUsers = await User.find({}, 'email phone').lean();
+  const emailSet = new Set(existingUsers.map(u => u.email));
+  const phoneSet = new Set(existingUsers.map(u => u.phone));
+  
+  // Yedek dosyasındaki kullanıcıları filtrele (email veya telefon çakışırsa atla)
+  const filteredUsers = users.filter(user => {
+    const emailExists = emailSet.has(user.email);
+    const phoneExists = phoneSet.has(user.phone);
+    return !emailExists && !phoneExists;
+  });
+  
+  console.log(`Filtered out ${users.length - filteredUsers.length} duplicate users (email or phone)`);
+  
+  return filteredUsers;
+}
+
+async function filterDuplicateApartments(apartments: any[]) {
+  // Mevcut daireleri al (blockNumber + apartmentNumber unique)
+  const existingApartments = await Apartment.find({}, 'blockNumber apartmentNumber').lean();
+  const apartmentSet = new Set(
+    existingApartments.map(a => `${a.blockNumber}-${a.apartmentNumber}`)
+  );
+  
+  // Yedek dosyasındaki daireleri filtrele
+  const filteredApartments = apartments.filter(
+    apt => !apartmentSet.has(`${apt.blockNumber}-${apt.apartmentNumber}`)
+  );
+  
+  console.log(`Filtered out ${apartments.length - filteredApartments.length} duplicate apartments`);
+  
+  return filteredApartments;
 }
 

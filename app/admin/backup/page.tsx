@@ -256,15 +256,30 @@ export default function BackupPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex gap-3">
-                <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-red-900">
-                  <p className="font-medium mb-1">Dikkat!</p>
-                  <p className="text-red-800">
-                    &quot;Değiştir&quot; modu mevcut tüm verileri silecektir. 
-                    İşleme başlamadan önce mutlaka mevcut veritabanının yedeğini alın!
-                  </p>
+            <div className="space-y-3">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex gap-3">
+                  <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-red-900">
+                    <p className="font-medium mb-1">Dikkat!</p>
+                    <p className="text-red-800">
+                      &quot;Değiştir&quot; modu mevcut tüm verileri silecektir. 
+                      İşleme başlamadan önce mutlaka mevcut veritabanının yedeğini alın!
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex gap-3">
+                  <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-blue-900">
+                    <p className="font-medium mb-1">Duplicate Kontrolü</p>
+                    <p className="text-blue-800">
+                      Mevcut kayıtlarla çakışan veriler (aynı email, telefon veya daire numarası) 
+                      otomatik olarak atlanır ve import edilmez.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
