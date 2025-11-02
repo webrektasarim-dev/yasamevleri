@@ -15,13 +15,16 @@ import {
   FileText,
   DoorOpen,
   UserCog,
+  X,
 } from "lucide-react";
 
 interface SidebarProps {
   isAdmin?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function Sidebar({ isAdmin = false }: SidebarProps) {
+export function Sidebar({ isAdmin = false, isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const userLinks = [
@@ -49,40 +52,65 @@ export function Sidebar({ isAdmin = false }: SidebarProps) {
   const links = isAdmin ? adminLinks : userLinks;
 
   return (
-    <aside className="fixed left-0 top-16 w-64 border-r border-zinc-200 bg-white h-[calc(100vh-4rem)] overflow-y-auto">
-      <nav className="flex flex-col gap-1 p-4">
-        {/* Section Title */}
-        <div className="mb-3 px-3">
-          <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-            {isAdmin ? "Yönetim Paneli" : "Menü"}
-          </h3>
-        </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
-        {links.map((link) => {
-          const Icon = link.icon;
-          const isActive = pathname === link.href;
+      {/* Sidebar */}
+      <aside className={cn(
+        "fixed left-0 top-16 w-64 border-r border-zinc-200 bg-white h-[calc(100vh-4rem)] overflow-y-auto z-50 transition-transform duration-300 ease-in-out",
+        // Mobile: slide from left
+        "lg:translate-x-0",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        {/* Mobile Close Button */}
+        <button
+          onClick={onClose}
+          className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-zinc-100 text-zinc-600"
+        >
+          <X className="h-5 w-5" />
+        </button>
 
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all group",
-                isActive
-                  ? "bg-zinc-900 text-white"
-                  : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
-              )}
-            >
+        <nav className="flex flex-col gap-1 p-4">
+          {/* Section Title */}
+          <div className="mb-3 px-3">
+            <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+              {isAdmin ? "Yönetim Paneli" : "Menü"}
+            </h3>
+          </div>
+
+          {links.map((link) => {
+            const Icon = link.icon;
+            const isActive = pathname === link.href;
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={onClose}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all group",
+                  isActive
+                    ? "bg-zinc-900 text-white"
+                    : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
+                )}
+              >
                 <Icon className={cn(
                   "h-4 w-4",
-                isActive ? "text-white" : "text-zinc-600 group-hover:text-zinc-900"
+                  isActive ? "text-white" : "text-zinc-600 group-hover:text-zinc-900"
                 )} />
-              <span>{link.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
 

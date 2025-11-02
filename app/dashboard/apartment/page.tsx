@@ -61,9 +61,9 @@ export default function ApartmentPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Daire Bilgileri</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Daire Bilgileri</h1>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

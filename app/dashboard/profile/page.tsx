@@ -99,12 +99,12 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">Profil</h1>
-        <p className="text-zinc-600 mt-1">Hesap bilgilerinizi yönetin</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 tracking-tight">Profil</h1>
+        <p className="text-sm md:text-base text-zinc-600 mt-1">Hesap bilgilerinizi yönetin</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-2">
         <Card className="border border-zinc-200 bg-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-zinc-900">

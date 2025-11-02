@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 
@@ -13,6 +13,7 @@ export default function DashboardLayout({
 }) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -37,10 +38,16 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-zinc-50">
-      <Header />
+      <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex">
-        <Sidebar isAdmin={false} />
-        <main className="flex-1 p-8 ml-64">{children}</main>
+        <Sidebar 
+          isAdmin={false} 
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+        <main className="flex-1 p-4 md:p-6 lg:p-8 lg:ml-64 w-full">
+          {children}
+        </main>
       </div>
     </div>
   );
