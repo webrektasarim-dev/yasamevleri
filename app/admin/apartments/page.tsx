@@ -282,7 +282,7 @@ export default function ApartmentsPage() {
                 <TableHead>Kat</TableHead>
                 <TableHead>m²</TableHead>
                 <TableHead>Otopark</TableHead>
-                <TableHead>Sakinler</TableHead>
+                <TableHead className="min-w-[200px]">Sakinler</TableHead>
                 <TableHead>İşlemler</TableHead>
               </TableRow>
             </TableHeader>
@@ -296,7 +296,24 @@ export default function ApartmentsPage() {
                   <TableCell>
                     {apartment.parkingSpot?.spotNumber || "-"}
                   </TableCell>
-                  <TableCell>{apartment.residents?.length || 0}</TableCell>
+                  <TableCell>
+                    {apartment.residents && apartment.residents.length > 0 ? (
+                      <div className="text-sm">
+                        {apartment.residents.map((resident: any, index: number) => (
+                          <span key={resident._id || index}>
+                            <span className="font-medium text-zinc-900">
+                              {resident.firstName} {resident.lastName}
+                            </span>
+                            {index < apartment.residents.length - 1 && (
+                              <span className="text-zinc-400">, </span>
+                            )}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-zinc-400 text-sm">Boş</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button

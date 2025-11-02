@@ -158,56 +158,56 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        {user.apartmentId && typeof user.apartmentId === 'object' && user.apartmentId.blockNumber ? (
-          <Card className="border border-zinc-200 bg-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-zinc-900">
-                <Building2 className="h-5 w-5" />
-                Daire Bilgileri
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <p className="text-sm text-zinc-600">Blok Numarası</p>
-                <p className="text-lg font-semibold text-zinc-900">
-                  {user.apartmentId.blockNumber || '-'}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-zinc-600">Daire Numarası</p>
-                <p className="text-lg font-semibold text-zinc-900">
-                  {user.apartmentId.apartmentNumber || '-'}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-zinc-600">Kat</p>
-                <p className="text-lg font-semibold text-zinc-900">
-                  {user.apartmentId.floor || '-'}
-                </p>
-              </div>
-              {user.apartmentId.squareMeters && (
+        <Card className="border border-zinc-200 bg-white">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-zinc-900">
+              <Building2 className="h-5 w-5" />
+              Daire Bilgileri
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {user.apartmentId && typeof user.apartmentId === 'object' && user.apartmentId.blockNumber ? (
+              <>
                 <div>
-                  <p className="text-sm text-zinc-600">Metrekare</p>
+                  <p className="text-sm text-zinc-600">Blok Numarası</p>
                   <p className="text-lg font-semibold text-zinc-900">
-                    {user.apartmentId.squareMeters} m²
+                    {user.apartmentId.blockNumber || '-'}
                   </p>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        ) : user.apartmentId ? (
-          <Card className="border border-zinc-200 bg-white">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-zinc-900">
-                <Building2 className="h-5 w-5" />
-                Daire Bilgileri
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-zinc-600">Daire bilgileri yükleniyor...</p>
-            </CardContent>
-          </Card>
-        ) : null}
+                <div>
+                  <p className="text-sm text-zinc-600">Daire Numarası</p>
+                  <p className="text-lg font-semibold text-zinc-900">
+                    {user.apartmentId.apartmentNumber || '-'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-zinc-600">Kat</p>
+                  <p className="text-lg font-semibold text-zinc-900">
+                    {user.apartmentId.floor || '-'}
+                  </p>
+                </div>
+                {user.apartmentId.squareMeters && (
+                  <div>
+                    <p className="text-sm text-zinc-600">Metrekare</p>
+                    <p className="text-lg font-semibold text-zinc-900">
+                      {user.apartmentId.squareMeters} m²
+                    </p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="py-8 text-center">
+                <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-8 w-8 text-amber-600" />
+                </div>
+                <p className="text-zinc-900 font-semibold mb-2">Daire Ataması Yapılmadı</p>
+                <p className="text-sm text-zinc-600">
+                  Hesabınıza henüz bir daire atanmamış. Lütfen site yönetimiyle iletişime geçin.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <Card className="border border-zinc-200 bg-white">
           <CardHeader>

@@ -62,22 +62,23 @@ export async function POST(req: NextRequest) {
       ]);
     }
 
-    // Helper function to remove _id and create new documents
-    const removeIds = (items: any[]) => {
+    // Helper function to clean documents (only remove __v, keep _id for relationships)
+    const cleanDocs = (items: any[]) => {
       return items.map(item => {
-        const { _id, __v, ...rest } = item;
+        const { __v, ...rest } = item;
         return rest;
       });
     };
 
-    // Import data - Remove _id to avoid duplicates
+    // Import data - Keep _id to preserve relationships
+    // Order is important: apartments first, then users (because users reference apartments)
     if (data.apartments && Array.isArray(data.apartments)) {
       const apartmentsToFilter = mode === 'merge'
         ? await filterDuplicateApartments(data.apartments)
         : data.apartments;
       
       if (apartmentsToFilter.length > 0) {
-        const apartmentsData = removeIds(apartmentsToFilter);
+        const apartmentsData = cleanDocs(apartmentsToFilter);
         try {
           const apartments = await Apartment.insertMany(apartmentsData, { ordered: false });
           results.apartments = apartments.length;
@@ -97,7 +98,7 @@ export async function POST(req: NextRequest) {
       const usersToFilter = await filterDuplicateUsers(data.users);
       
       if (usersToFilter.length > 0) {
-        const usersData = removeIds(usersToFilter);
+        const usersData = cleanDocs(usersToFilter);
         try {
           const users = await User.insertMany(usersData, { ordered: false });
           results.users = users.length;
@@ -113,42 +114,43 @@ export async function POST(req: NextRequest) {
     }
 
     if (data.dues && Array.isArray(data.dues)) {
-      const duesData = removeIds(data.dues);
-      const dues = await Dues.insertMany(duesData);
+      const duesData = cleanDocs(data.dues);
+      const dues = await Dues.insertMany(duesData, { ordered: false });
       results.dues = dues.length;
     }
 
     if (data.payments && Array.isArray(data.payments)) {
-      const paymentsData = removeIds(data.payments);
-      const payments = await Payment.insertMany(paymentsData);
+      const paymentsData = cleanDocs(data.payments);
+      const payments = await Payment.insertMany(paymentsData, { ordered: false });
       results.payments = payments.length;
     }
 
     if (data.reservations && Array.isArray(data.reservations)) {
-      const reservationsData = removeIds(data.reservations);
-      const reservations = await Reservation.insertMany(reservationsData);
+      const reservationsData = cleanDocs(data.reservations);
+      const reservations = await Reservation.insertMany(reservationsData, { ordered: false });
       results.reservations = reservations.length;
     }
 
     if (data.announcements && Array.isArray(data.announcements)) {
-      const announcementsData = removeIds(data.announcements);
-      const announcements = await Announcement.insertMany(announcementsData);
+      const announcementsData = cleanDocs(data.announcements);
+      const announcements = await Announcement.insertMany(announcementsData, { ordered: false });
       results.announcements = announcements.length;
     }
 
     if (data.smsVerifications && Array.isArray(data.smsVerifications)) {
-      const smsData = removeIds(data.smsVerifications);
-      const smsVerifications = await SMSVerification.insertMany(smsData);
+      const smsData = cleanDocs(data.smsVerifications);
+      const smsVerifications = await SMSVerification.insertMany(smsData, { ordered: false });
       results.smsVerifications = smsVerifications.length;
     }
 
     if (data.settings && Array.isArray(data.settings)) {
-      const settingsData = removeIds(data.settings);
+      const settingsData = cleanDocs(data.settings);
       // Use upsert for settings to avoid duplicates by type
       for (const setting of settingsData) {
+        const { _id, ...settingWithoutId } = setting;
         await Settings.findOneAndUpdate(
           { type: setting.type },
-          setting,
+          settingWithoutId,
           { upsert: true, new: true }
         );
       }

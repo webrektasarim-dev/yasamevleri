@@ -22,6 +22,8 @@ Yedekleme dosyası şunları içerir:
 - ✅ Rezervasyonlar
 - ✅ Duyurular
 - ✅ SMS doğrulama kayıtları
+- ✅ Sistem ayarları (bildirim ve güvenlik ayarları)
+- ✅ **Daire atamaları korunur** (kullanıcı-daire ilişkileri)
 
 ### Yedek Oluşturma Adımları
 
@@ -45,16 +47,24 @@ Yedekleme dosyası şunları içerir:
       "payments": 150,
       "reservations": 30,
       "announcements": 10,
-      "smsVerifications": 5
+      "smsVerifications": 5,
+      "settings": 2
     }
   },
   "data": {
-    "users": [...],
-    "apartments": [...],
-    // ... diğer koleksiyonlar
+    "users": [...],           // Kullanıcılar (apartmentId referansları ile)
+    "apartments": [...],      // Daireler (residents referansları ile)
+    "dues": [...],
+    "payments": [...],
+    "reservations": [...],
+    "announcements": [...],
+    "smsVerifications": [...],
+    "settings": [...]         // Bildirim ve güvenlik ayarları
   }
 }
 ```
+
+> **ÖNEMLİ:** Yedek dosyası ObjectId referanslarını korur. Bu sayede kullanıcı-daire ilişkileri geri yüklemede bozulmaz.
 
 ## 📤 Yedek Geri Yükleme
 
@@ -97,7 +107,13 @@ Yedekleme dosyası şunları içerir:
 - payments: 150
 - reservations: 30
 - announcements: 10
+- settings: 2
 ```
+
+> **DİKKAT:** Geri yükleme sırasında:
+> - Daireler **önce** geri yüklenir
+> - Ardından kullanıcılar geri yüklenir (apartmentId referansları korunur)
+> - Bu sıralama, kullanıcı-daire ilişkilerinin doğru kurulmasını sağlar
 
 ## 📅 Yedekleme Önerileri
 
@@ -135,7 +151,13 @@ Yedekleme dosyası şunları içerir:
 ### "Duplicate Key Error"
 - Birleştir modunda aynı email'e sahip kullanıcılar atlanır
 - Daireler için aynı blok+daire numarası çakışabilir
-- Bu durumda "Değiştir" modunu kullanın veya manuel temizlik yapın
+- **Çözüm:** "Değiştir" modunu kullanın veya önce veritabanını temizleyin
+
+### Daire Atamaları Kayboldu
+- **Neden:** Eski yedekleme sistemi _id'leri siliyordu
+- **Çözüm:** Yeni bir yedek oluşturun (sistem artık _id'leri koruyor)
+- Eski yedekler geri yüklenirse daire atamaları kaybolabilir
+- **Tavsiye:** Bu güncellemeden sonra YENİ bir yedek alın
 
 ## 🛡️ Felaket Kurtarma Planı
 
