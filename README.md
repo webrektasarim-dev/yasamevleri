@@ -19,6 +19,10 @@
 - 📊 **Raporlama**: Tahsilat grafikleri, ödeme istatistikleri, dashboard
 - 🔔 **Duyuru Yayını**: Normal ve acil duyurular, önceliklendirme
 - 🎯 **Rezervasyon Kontrolü**: Onay/red mekanizması, çakışma kontrolü
+- 💾 **Yedekleme Sistemi**: Tek tıkla veritabanı yedekleme ve geri yükleme
+- 🔐 **Güvenlik Ayarları**: Şifre politikası, oturum yönetimi, 2FA hazırlığı
+- 📧 **Bildirim Ayarları**: Email, SMS ve Push bildirim yönetimi
+- 💜 **Yardım ve Destek**: Kapsamlı kullanım kılavuzu ve teknik destek
 
 ## 🛠️ Teknoloji Stack
 
@@ -202,5 +206,31 @@ Private - Sadece belirtilen site için kullanım hakkı vardır.
 
 ## 🤝 Destek
 
-Sorularınız veya sorunlarınız için lütfen proje yöneticisi ile iletişime geçin.
+**webrek tasarım**
+- 📞 Telefon: 0553 854 68 53
+- 📧 Email: destek@webrektasarim.com
+- 🌐 Website: www.webrektasarim.com
+- 🕐 Çalışma Saatleri: Pazartesi-Cuma 09:00-18:00
+
+Sorularınız veya sorunlarınız için yukarıdaki iletişim bilgilerini kullanabilirsiniz.
+
+## 📚 Dokümantasyon
+
+- **CHANGELOG.md** - Detaylı değişiklik geçmişi
+- **BACKUP_GUIDE.md** - Yedekleme sistemi kullanım kılavuzu
+- **DEPLOYMENT_VPS.md** - VPS deployment kılavuzu
+
+## 🎯 Son Güncellemeler (v1.2.0)
+
+- ✅ PWA manifest icon hataları düzeltildi
+- ✅ Mobil responsive tasarım iyileştirildi
+- ✅ Yedekleme ve geri yükleme sistemi eklendi
+- ✅ Bildirim yönetimi sistemi (Email/SMS/Push)
+- ✅ Güvenlik ayarları (Şifre politikası aktif)
+- ✅ Yardım ve destek sayfası
+- ✅ Database model düzeltmeleri (ObjectId referanslar)
+- ✅ Duplicate detection ve error handling
+
+**Versiyon:** 1.2.0  
+**Son Güncelleme:** 2 Kasım 2024
 
