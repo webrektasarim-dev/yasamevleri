@@ -18,6 +18,7 @@ import {
   Key,
   AlertTriangle,
   CheckCircle,
+  XCircle,
   Save,
   Info,
   MessageSquare,
@@ -77,13 +78,16 @@ export default function SecurityPage() {
   };
 
   const handleToggle = (category: string, field: string) => {
-    setSettings(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [field]: !prev[category as keyof typeof prev][field as any],
-      },
-    }));
+    setSettings(prev => {
+      const categoryData = prev[category as keyof typeof prev] as any;
+      return {
+        ...prev,
+        [category]: {
+          ...categoryData,
+          [field]: !categoryData[field],
+        },
+      };
+    });
   };
 
   const handleNumberChange = (category: string, field: string, value: number) => {
