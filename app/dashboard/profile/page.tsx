@@ -44,7 +44,7 @@ export default function ProfilePage() {
         setUser(data.data);
       }
     } catch (error) {
-      // Error fetching user
+      // Error handled
     } finally {
       setIsLoading(false);
     }
@@ -158,7 +158,7 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
 
-        {user.apartmentId && (
+        {user.apartmentId && typeof user.apartmentId === 'object' && user.apartmentId.blockNumber ? (
           <Card className="border border-zinc-200 bg-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-zinc-900">
@@ -170,22 +170,44 @@ export default function ProfilePage() {
               <div>
                 <p className="text-sm text-zinc-600">Blok Numarası</p>
                 <p className="text-lg font-semibold text-zinc-900">
-                  {user.apartmentId.blockNumber}
+                  {user.apartmentId.blockNumber || '-'}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-zinc-600">Daire Numarası</p>
                 <p className="text-lg font-semibold text-zinc-900">
-                  {user.apartmentId.apartmentNumber}
+                  {user.apartmentId.apartmentNumber || '-'}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-zinc-600">Kat</p>
-                <p className="text-lg font-semibold text-zinc-900">{user.apartmentId.floor}</p>
+                <p className="text-lg font-semibold text-zinc-900">
+                  {user.apartmentId.floor || '-'}
+                </p>
               </div>
+              {user.apartmentId.squareMeters && (
+                <div>
+                  <p className="text-sm text-zinc-600">Metrekare</p>
+                  <p className="text-lg font-semibold text-zinc-900">
+                    {user.apartmentId.squareMeters} m²
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
-        )}
+        ) : user.apartmentId ? (
+          <Card className="border border-zinc-200 bg-white">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-zinc-900">
+                <Building2 className="h-5 w-5" />
+                Daire Bilgileri
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-zinc-600">Daire bilgileri yükleniyor...</p>
+            </CardContent>
+          </Card>
+        ) : null}
 
         <Card className="border border-zinc-200 bg-white">
           <CardHeader>
@@ -286,6 +308,7 @@ export default function ProfilePage() {
     </div>
   );
 }
+
 
 
 

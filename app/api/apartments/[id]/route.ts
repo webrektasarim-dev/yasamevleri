@@ -24,7 +24,8 @@ export async function GET(
 
     await dbConnect();
 
-    const apartment = await Apartment.findById(params.id).populate("residents", "firstName lastName email phone");
+    const apartment = await Apartment.findById(params.id)
+      .populate("residents", "firstName lastName email phone");
 
     if (!apartment) {
       return NextResponse.json<ApiResponse>(
@@ -129,6 +130,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 

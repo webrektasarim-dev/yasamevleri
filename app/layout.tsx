@@ -32,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -39,33 +40,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Örnek Yaşam Evleri" />
         <meta name="theme-color" content="#18181b" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof window !== 'undefined') {
-                console.log = function() {};
-                console.warn = function() {};
-                console.error = function() {};
-                console.info = function() {};
-                console.debug = function() {};
-              }
-              
-              // Service Worker kaydet
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(
-                    function(registration) {
-                      // Başarılı
-                    },
-                    function(err) {
-                      // Hata
-                    }
-                  );
-                });
-              }
-            `,
-          }}
-        />
       </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>

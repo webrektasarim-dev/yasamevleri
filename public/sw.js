@@ -1,8 +1,12 @@
-const CACHE_NAME = 'ornek-yasam-evleri-v1';
+const CACHE_NAME = 'ornek-yasam-evleri-v3';
 const urlsToCache = [
   '/',
   '/login',
   '/register',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/favicon.png',
+  '/manifest.json',
 ];
 
 // Install event

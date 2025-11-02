@@ -27,7 +27,10 @@ const ApartmentSchema = new Schema<IApartment>(
       spotNumber: String,
       licensePlate: String,
     },
-    residents: [String],
+    residents: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }],
     duesCoefficient: {
       type: Number,
       default: 1,
@@ -47,6 +50,7 @@ const Apartment: Model<IApartment> =
   mongoose.model<IApartment>("Apartment", ApartmentSchema);
 
 export default Apartment;
+
 
 
 

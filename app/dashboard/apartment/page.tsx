@@ -34,7 +34,7 @@ export default function ApartmentPage() {
         setApartment(data.data);
       }
     } catch (error) {
-      console.error("Apartment fetch error:", error);
+      // Error handled
     } finally {
       setIsLoading(false);
     }
@@ -120,42 +120,59 @@ export default function ApartmentPage() {
           </Card>
         )}
 
-        {apartment.residents && apartment.residents.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Sakinler
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Sakinler
+              {apartment.residents && apartment.residents.length > 0 && (
+                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                  ({apartment.residents.length} kişi)
+                </span>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {apartment.residents && apartment.residents.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {apartment.residents.map((resident: any) => (
-                  <li key={resident._id} className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-sm font-semibold">
-                        {resident.firstName[0]}
-                        {resident.lastName[0]}
+                  <div key={resident._id || resident.id} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-semibold text-primary">
+                        {resident.firstName?.[0]?.toUpperCase() || 'U'}
+                        {resident.lastName?.[0]?.toUpperCase() || 'U'}
                       </span>
                     </div>
-                    <div>
-                      <p className="font-medium">
-                        {resident.firstName} {resident.lastName}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">
+                        {resident.firstName || 'İsimsiz'} {resident.lastName || 'Kullanıcı'}
                       </p>
-                      <p className="text-sm text-muted-foreground">
-                        {resident.email}
+                      <p className="text-sm text-muted-foreground truncate">
+                        {resident.email || 'Email yok'}
                       </p>
+                      {resident.phone && (
+                        <p className="text-xs text-muted-foreground truncate">
+                          {resident.phone}
+                        </p>
+                      )}
                     </div>
-                  </li>
+                  </div>
                 ))}
-              </ul>
-            </CardContent>
-          </Card>
-        )}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p>Bu dairede henüz kayıtlı sakin bulunmuyor.</p>
+                <p className="text-sm mt-1">Yönetici tarafından daire ataması yapıldığında burada görünecektir.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
+
 
 
 

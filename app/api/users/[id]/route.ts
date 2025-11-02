@@ -27,7 +27,7 @@ export async function GET(
 
     const user = await User.findById(params.id)
       .select("-password")
-      .populate("apartmentId", "blockNumber apartmentNumber floor");
+      .populate("apartmentId", "blockNumber apartmentNumber floor squareMeters");
 
     if (!user) {
       return NextResponse.json<ApiResponse>(
@@ -166,6 +166,7 @@ export async function DELETE(
     );
   }
 }
+
 
 
 
