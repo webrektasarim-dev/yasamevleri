@@ -1,0 +1,12 @@
+.env.local
+.env
+node_modules
+.next
+.git
+.vscode
+*.log
+.DS_Store
+BACKUP_GUIDE.md
+DEPLOYMENT_VPS.md
+scripts/migrate-to-objectid.ts
+
