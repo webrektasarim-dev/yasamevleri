@@ -9,6 +9,7 @@ import Payment from "@/models/Payment";
 import Reservation from "@/models/Reservation";
 import Announcement from "@/models/Announcement";
 import SMSVerification from "@/models/SMSVerification";
+import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 
 export const dynamic = 'force-dynamic';
@@ -44,6 +45,7 @@ export async function POST(req: NextRequest) {
       reservations: 0,
       announcements: 0,
       smsVerifications: 0,
+      settings: 0,
     };
 
     // If mode is 'replace', clear existing data first
@@ -56,6 +58,7 @@ export async function POST(req: NextRequest) {
         Dues.deleteMany({}),
         User.deleteMany({ role: { $ne: 'admin' } }), // Keep current admin
         Apartment.deleteMany({}),
+        Settings.deleteMany({}), // Clear settings too
       ]);
     }
 
@@ -137,6 +140,19 @@ export async function POST(req: NextRequest) {
       const smsData = removeIds(data.smsVerifications);
       const smsVerifications = await SMSVerification.insertMany(smsData);
       results.smsVerifications = smsVerifications.length;
+    }
+
+    if (data.settings && Array.isArray(data.settings)) {
+      const settingsData = removeIds(data.settings);
+      // Use upsert for settings to avoid duplicates by type
+      for (const setting of settingsData) {
+        await Settings.findOneAndUpdate(
+          { type: setting.type },
+          setting,
+          { upsert: true, new: true }
+        );
+      }
+      results.settings = settingsData.length;
     }
 
     return NextResponse.json<ApiResponse>({

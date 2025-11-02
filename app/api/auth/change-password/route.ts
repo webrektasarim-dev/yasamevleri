@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 import bcrypt from "bcryptjs";
 
@@ -28,14 +29,45 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (newPassword.length < 6) {
+    await dbConnect();
+
+    // Get security settings
+    const securitySettings = await Settings.findOne({ type: 'security' });
+    const passwordPolicy = securitySettings?.settings?.passwordPolicy || {
+      minLength: 6,
+      requireUppercase: false,
+      requireNumbers: false,
+      requireSpecialChars: false,
+    };
+
+    // Validate password against policy
+    if (newPassword.length < passwordPolicy.minLength) {
       return NextResponse.json<ApiResponse>(
-        { success: false, error: "Yeni şifre en az 6 karakter olmalıdır" },
+        { success: false, error: `Yeni şifre en az ${passwordPolicy.minLength} karakter olmalıdır` },
         { status: 400 }
       );
     }
 
-    await dbConnect();
+    if (passwordPolicy.requireUppercase && !/[A-Z]/.test(newPassword)) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: "Şifre en az bir büyük harf içermelidir" },
+        { status: 400 }
+      );
+    }
+
+    if (passwordPolicy.requireNumbers && !/[0-9]/.test(newPassword)) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: "Şifre en az bir rakam içermelidir" },
+        { status: 400 }
+      );
+    }
+
+    if (passwordPolicy.requireSpecialChars && !/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+      return NextResponse.json<ApiResponse>(
+        { success: false, error: "Şifre en az bir özel karakter içermelidir" },
+        { status: 400 }
+      );
+    }
 
     // Kullanıcıyı bul
     const userId = (session.user as any).id;

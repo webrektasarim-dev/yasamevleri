@@ -9,6 +9,7 @@ import Payment from "@/models/Payment";
 import Reservation from "@/models/Reservation";
 import Announcement from "@/models/Announcement";
 import SMSVerification from "@/models/SMSVerification";
+import Settings from "@/models/Settings";
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +27,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
 
     // Fetch all data from collections
-    const [users, apartments, dues, payments, reservations, announcements, smsVerifications] = await Promise.all([
+    const [users, apartments, dues, payments, reservations, announcements, smsVerifications, settings] = await Promise.all([
       User.find({}).lean(),
       Apartment.find({}).lean(),
       Dues.find({}).lean(),
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
       Reservation.find({}).lean(),
       Announcement.find({}).lean(),
       SMSVerification.find({}).lean(),
+      Settings.find({}).lean(),
     ]);
 
     // Create backup object
@@ -50,6 +52,7 @@ export async function GET(req: NextRequest) {
           reservations: reservations.length,
           announcements: announcements.length,
           smsVerifications: smsVerifications.length,
+          settings: settings.length,
         },
       },
       data: {
@@ -60,6 +63,7 @@ export async function GET(req: NextRequest) {
         reservations,
         announcements,
         smsVerifications,
+        settings,
       },
     };
 

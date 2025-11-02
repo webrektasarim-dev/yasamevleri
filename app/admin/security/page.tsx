@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -54,7 +54,27 @@ export default function SecurityPage() {
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { showToast, ToastComponent } = useToast();
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await fetch('/api/admin/settings?type=security');
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setSettings(data.data);
+      }
+    } catch (error) {
+      showToast("Ayarlar yüklenemedi", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleToggle = (category: string, field: string) => {
     setSettings(prev => ({
@@ -79,14 +99,41 @@ export default function SecurityPage() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      showToast("Güvenlik ayarları kaydedildi! ✅", "success");
-    } catch (error) {
-      showToast("Kayıt başarısız oldu", "error");
+      const response = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'security',
+          settings,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast("Güvenlik ayarları kaydedildi! ✅", "success");
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error: any) {
+      showToast(error.message || "Kayıt başarısız oldu", "error");
     } finally {
       setIsSaving(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

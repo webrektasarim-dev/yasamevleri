@@ -6,6 +6,7 @@ export { default as Reservation } from "./Reservation";
 export { default as Announcement } from "./Announcement";
 export { default as SMSVerification } from "./SMSVerification";
 export { default as FacilitySettings } from "./FacilitySettings";
+export { default as Settings } from "./Settings";
 
 
 

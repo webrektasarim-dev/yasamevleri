@@ -103,6 +103,15 @@ export interface ISMSVerification extends Document {
   createdAt: Date;
 }
 
+export interface ISettings extends Document {
+  _id: string;
+  type: 'notification' | 'security';
+  settings: any;
+  updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // API Response types
 export interface ApiResponse<T = any> {
   success: boolean;

@@ -9,6 +9,7 @@ import Payment from "@/models/Payment";
 import Reservation from "@/models/Reservation";
 import Announcement from "@/models/Announcement";
 import SMSVerification from "@/models/SMSVerification";
+import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 
 export const dynamic = 'force-dynamic';
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
       dues: 0,
       users: 0,
       apartments: 0,
+      settings: 0,
     };
 
     // Tüm koleksiyonları temizle
@@ -72,6 +74,9 @@ export async function POST(req: NextRequest) {
 
     const apartmentResult = await Apartment.deleteMany({});
     results.apartments = apartmentResult.deletedCount || 0;
+
+    const settingsResult = await Settings.deleteMany({});
+    results.settings = settingsResult.deletedCount || 0;
 
     return NextResponse.json<ApiResponse>({
       success: true,
