@@ -166,7 +166,35 @@ export default function SettingsPage() {
             </div>
           </Link>
 
-          {/* Yardım ve Destek Kartı */}
+          {/* Bildirim Ayarları Kartı */}
+          <Link href="/admin/notifications">
+            <div className="text-left p-6 rounded-2xl bg-white border-2 border-orange-200 hover:border-orange-400 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 group cursor-pointer">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+                  <Bell className="h-7 w-7 text-white" />
+                </div>
+                <ChevronRight className="h-6 w-6 text-orange-400 ml-auto group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Bildirim Ayarları</h3>
+              <p className="text-sm text-gray-600">Email, SMS ve push bildirimlerini yönetin</p>
+            </div>
+          </Link>
+
+          {/* Güvenlik Ayarları Kartı */}
+          <Link href="/admin/security">
+            <div className="text-left p-6 rounded-2xl bg-white border-2 border-red-200 hover:border-red-400 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 group cursor-pointer">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center shadow-lg">
+                  <Shield className="h-7 w-7 text-white" />
+                </div>
+                <ChevronRight className="h-6 w-6 text-red-400 ml-auto group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Güvenlik Ayarları</h3>
+              <p className="text-sm text-gray-600">Şifre politikası ve oturum yönetimi</p>
+            </div>
+          </Link>
+
+          {/* Yardım ve Destek Kartı - En Sonda */}
           <Link href="/admin/help">
             <div className="text-left p-6 rounded-2xl bg-white border-2 border-purple-200 hover:border-purple-400 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 group cursor-pointer">
               <div className="flex items-center gap-4 mb-3">
@@ -179,27 +207,6 @@ export default function SettingsPage() {
               <p className="text-sm text-gray-600">Kullanım kılavuzu ve teknik destek</p>
             </div>
           </Link>
-
-          {/* Diğer ayar kartları */}
-          <div className="p-6 rounded-2xl bg-white border-2 border-gray-200 shadow-lg opacity-50">
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-lg">
-                <Bell className="h-7 w-7 text-white" />
-              </div>
-            </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Bildirim Ayarları</h3>
-            <p className="text-sm text-gray-600">Yakında...</p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-white border-2 border-gray-200 shadow-lg opacity-50">
-            <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-lg">
-                <Shield className="h-7 w-7 text-white" />
-              </div>
-            </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Güvenlik Ayarları</h3>
-            <p className="text-sm text-gray-600">Yakında...</p>
-          </div>
         </div>
       )}
 
