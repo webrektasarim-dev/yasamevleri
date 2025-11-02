@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/toast";
-import { Clock, Save, CheckCircle, XCircle, Calendar, ChevronRight, Settings2, Bell, Shield, Database } from "lucide-react";
+import { Clock, Save, CheckCircle, XCircle, Calendar, ChevronRight, Settings2, Bell, Shield, Database, HelpCircle } from "lucide-react";
 import Link from "next/link";
 
 const facilityTypes = [
@@ -163,6 +163,20 @@ export default function SettingsPage() {
               </div>
               <h3 className="text-xl font-bold text-gray-800 mb-2">Yedekleme</h3>
               <p className="text-sm text-gray-600">Veritabanını yedekleyin ve geri yükleyin</p>
+            </div>
+          </Link>
+
+          {/* Yardım ve Destek Kartı */}
+          <Link href="/admin/help">
+            <div className="text-left p-6 rounded-2xl bg-white border-2 border-purple-200 hover:border-purple-400 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 group cursor-pointer">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
+                  <HelpCircle className="h-7 w-7 text-white" />
+                </div>
+                <ChevronRight className="h-6 w-6 text-purple-400 ml-auto group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Yardım ve Destek</h3>
+              <p className="text-sm text-gray-600">Kullanım kılavuzu ve teknik destek</p>
             </div>
           </Link>
 
