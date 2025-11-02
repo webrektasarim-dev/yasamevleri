@@ -15,15 +15,19 @@ import {
   FileJson,
   RefreshCw,
   Info,
-  ArrowLeft
+  ArrowLeft,
+  Trash2
 } from "lucide-react";
 
 export default function BackupPage() {
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [importMode, setImportMode] = useState<'replace' | 'merge'>('replace');
   const [importResults, setImportResults] = useState<any>(null);
+  const [clearResults, setClearResults] = useState<any>(null);
+  const [confirmText, setConfirmText] = useState("");
   const { showToast, ToastComponent } = useToast();
 
   const handleExport = async () => {
@@ -120,6 +124,55 @@ export default function BackupPage() {
       showToast(error.message || 'Yedek geri yüklenemedi', 'error');
     } finally {
       setIsImporting(false);
+    }
+  };
+
+  const handleClearDatabase = async () => {
+    if (confirmText !== "TEMİZLE") {
+      showToast('Lütfen "TEMİZLE" yazarak onaylayın', 'error');
+      return;
+    }
+
+    const finalConfirm = confirm(
+      '⚠️ SON UYARI ⚠️\n\n' +
+      'Tüm test verileri silinecek!\n' +
+      '- Tüm kullanıcılar (admin hariç)\n' +
+      '- Tüm daireler\n' +
+      '- Tüm aidatlar\n' +
+      '- Tüm ödemeler\n' +
+      '- Tüm rezervasyonlar\n' +
+      '- Tüm duyurular\n\n' +
+      'Bu işlem GERİ ALINMAZ!\n\n' +
+      'Devam etmek istediğinize EMİN MİSİNİZ?'
+    );
+
+    if (!finalConfirm) {
+      return;
+    }
+
+    setIsClearing(true);
+    try {
+      const response = await fetch('/api/admin/clear-database', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ confirmText }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setClearResults(result.data);
+        setConfirmText("");
+        showToast('Veritabanı başarıyla temizlendi! ✅', 'success');
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
+      showToast(error.message || 'Veritabanı temizlenemedi', 'error');
+    } finally {
+      setIsClearing(false);
     }
   };
 
@@ -288,6 +341,94 @@ export default function BackupPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Clear Database */}
+      <Card className="border border-red-200 bg-red-50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-red-900">
+            <Trash2 className="h-5 w-5" />
+            Test Verilerini Temizle
+          </CardTitle>
+          <CardDescription className="text-red-800">
+            Tüm test verilerini veritabanından kalıcı olarak silin (Admin kullanıcı korunur)
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-red-100 border-2 border-red-300 rounded-lg p-4">
+            <div className="flex gap-3">
+              <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-red-900">
+                <p className="font-bold mb-2 text-base">⚠️ TEHLİKELİ İŞLEM ⚠️</p>
+                <p className="mb-2">Bu işlem aşağıdaki verileri <span className="font-bold">KALICI OLARAK SİLER</span>:</p>
+                <ul className="list-disc list-inside space-y-1 text-red-800">
+                  <li>Tüm kullanıcılar (admin hariç)</li>
+                  <li>Tüm daireler</li>
+                  <li>Tüm aidatlar ve ödemeler</li>
+                  <li>Tüm rezervasyonlar</li>
+                  <li>Tüm duyurular</li>
+                  <li>SMS doğrulama kayıtları</li>
+                </ul>
+                <p className="mt-2 font-bold">Bu işlem GERİ ALINAMAZ!</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirm-text" className="text-zinc-700">
+              Onaylamak için <span className="font-bold text-red-600">&quot;TEMİZLE&quot;</span> yazın
+            </Label>
+            <input
+              id="confirm-text"
+              type="text"
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              placeholder="TEMİZLE"
+              className="w-full px-4 py-2 border-2 border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+
+          <Button
+            onClick={handleClearDatabase}
+            disabled={isClearing || confirmText !== "TEMİZLE"}
+            className="w-full bg-red-600 hover:bg-red-700 text-white"
+            size="lg"
+          >
+            {isClearing ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                Temizleniyor...
+              </>
+            ) : (
+              <>
+                <Trash2 className="h-4 w-4 mr-2" />
+                Veritabanını Temizle
+              </>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Clear Results */}
+      {clearResults && (
+        <Card className="border border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-green-900">
+              <CheckCircle2 className="h-5 w-5" />
+              Temizleme Başarılı
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {Object.entries(clearResults).map(([key, value]) => (
+                <div key={key} className="bg-white rounded-lg p-3 border border-green-200">
+                  <div className="text-2xl font-bold text-red-600">{value as number}</div>
+                  <div className="text-xs text-zinc-600 capitalize">{key} silindi</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Import Results */}
       {importResults && (
