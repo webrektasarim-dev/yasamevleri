@@ -2,17 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
-import User from "@/models/User";
-import Apartment from "@/models/Apartment";
-import Dues from "@/models/Dues";
-import Payment from "@/models/Payment";
-import Reservation from "@/models/Reservation";
-import Announcement from "@/models/Announcement";
-import SMSVerification from "@/models/SMSVerification";
-import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,6 +30,18 @@ export async function POST(req: NextRequest) {
     }
 
     await dbConnect();
+
+    // Dynamic import models to avoid build-time issues
+    const [User, Apartment, Dues, Payment, Reservation, Announcement, SMSVerification, Settings] = await Promise.all([
+      import("@/models/User").then(m => m.default),
+      import("@/models/Apartment").then(m => m.default),
+      import("@/models/Dues").then(m => m.default),
+      import("@/models/Payment").then(m => m.default),
+      import("@/models/Reservation").then(m => m.default),
+      import("@/models/Announcement").then(m => m.default),
+      import("@/models/SMSVerification").then(m => m.default),
+      import("@/models/Settings").then(m => m.default),
+    ]);
 
     // Mevcut admin kullanıcının bilgilerini sakla
     const currentAdmin = await User.findOne({ email: (session.user as any)?.email });

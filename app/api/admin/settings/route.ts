@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
-import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // GET settings by type
 export async function GET(req: NextRequest) {
@@ -30,6 +30,9 @@ export async function GET(req: NextRequest) {
     }
 
     await dbConnect();
+
+    // Dynamic import to avoid build-time issues
+    const Settings = (await import("@/models/Settings")).default;
 
     let settingsDoc = await Settings.findOne({ type });
 
@@ -125,6 +128,9 @@ export async function POST(req: NextRequest) {
     }
 
     await dbConnect();
+
+    // Dynamic import to avoid build-time issues
+    const Settings = (await import("@/models/Settings")).default;
 
     const settingsDoc = await Settings.findOneAndUpdate(
       { type },

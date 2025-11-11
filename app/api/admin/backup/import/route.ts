@@ -2,17 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
-import User from "@/models/User";
-import Apartment from "@/models/Apartment";
-import Dues from "@/models/Dues";
-import Payment from "@/models/Payment";
-import Reservation from "@/models/Reservation";
-import Announcement from "@/models/Announcement";
-import SMSVerification from "@/models/SMSVerification";
-import Settings from "@/models/Settings";
 import { ApiResponse } from "@/types";
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,6 +29,18 @@ export async function POST(req: NextRequest) {
     }
 
     await dbConnect();
+
+    // Dynamic import models to avoid build-time issues
+    const [User, Apartment, Dues, Payment, Reservation, Announcement, SMSVerification, Settings] = await Promise.all([
+      import("@/models/User").then(m => m.default),
+      import("@/models/Apartment").then(m => m.default),
+      import("@/models/Dues").then(m => m.default),
+      import("@/models/Payment").then(m => m.default),
+      import("@/models/Reservation").then(m => m.default),
+      import("@/models/Announcement").then(m => m.default),
+      import("@/models/SMSVerification").then(m => m.default),
+      import("@/models/Settings").then(m => m.default),
+    ]);
 
     const results: any = {
       users: 0,
@@ -74,7 +79,7 @@ export async function POST(req: NextRequest) {
     // Order is important: apartments first, then users (because users reference apartments)
     if (data.apartments && Array.isArray(data.apartments)) {
       const apartmentsToFilter = mode === 'merge'
-        ? await filterDuplicateApartments(data.apartments)
+        ? await filterDuplicateApartments(data.apartments, Apartment)
         : data.apartments;
       
       if (apartmentsToFilter.length > 0) {
@@ -95,7 +100,7 @@ export async function POST(req: NextRequest) {
 
     if (data.users && Array.isArray(data.users)) {
       // Always filter out duplicate emails (both modes)
-      const usersToFilter = await filterDuplicateUsers(data.users);
+      const usersToFilter = await filterDuplicateUsers(data.users, User);
       
       if (usersToFilter.length > 0) {
         const usersData = cleanDocs(usersToFilter);
@@ -171,11 +176,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-async function filterDuplicateUsers(users: any[]) {
+async function filterDuplicateUsers(users: any[], UserModel: any) {
   // Mevcut tüm email ve telefon numaralarını al
-  const existingUsers = await User.find({}, 'email phone').lean();
-  const emailSet = new Set(existingUsers.map(u => u.email));
-  const phoneSet = new Set(existingUsers.map(u => u.phone));
+  const existingUsers = await UserModel.find({}, 'email phone').lean();
+  const emailSet = new Set(existingUsers.map((u: any) => u.email));
+  const phoneSet = new Set(existingUsers.map((u: any) => u.phone));
   
   // Yedek dosyasındaki kullanıcıları filtrele (email veya telefon çakışırsa atla)
   const filteredUsers = users.filter(user => {
@@ -189,11 +194,11 @@ async function filterDuplicateUsers(users: any[]) {
   return filteredUsers;
 }
 
-async function filterDuplicateApartments(apartments: any[]) {
+async function filterDuplicateApartments(apartments: any[], ApartmentModel: any) {
   // Mevcut daireleri al (blockNumber + apartmentNumber unique)
-  const existingApartments = await Apartment.find({}, 'blockNumber apartmentNumber').lean();
+  const existingApartments = await ApartmentModel.find({}, 'blockNumber apartmentNumber').lean();
   const apartmentSet = new Set(
-    existingApartments.map(a => `${a.blockNumber}-${a.apartmentNumber}`)
+    existingApartments.map((a: any) => `${a.blockNumber}-${a.apartmentNumber}`)
   );
   
   // Yedek dosyasındaki daireleri filtrele
